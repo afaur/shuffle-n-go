@@ -36,13 +36,14 @@ func TestNewDeckEachCard(t *testing.T) {
 	}
 }
 
-func TestDealCards(t *testing.T) {
+func TestDealCard(t *testing.T) {
 	actualDeck := newDeck()
-	playerHand := deck{}
+	deltDeck := newDeck()
 
 	cardsToDeal := 5
+	playerHand := deck{}
 
-	deltDeck, playerHand := actualDeck.deal(playerHand, cardsToDeal)
+	deltDeck.deal(&playerHand, cardsToDeal)
 
 	if len(playerHand) != cardsToDeal {
 		errMsgExp := "Expected player hand to have %v card(s)"
@@ -53,6 +54,39 @@ func TestDealCards(t *testing.T) {
 
 	deltDeckLenAct := len(deltDeck)
 	deltDeckLenExp := len(actualDeck) - cardsToDeal
+
+	if deltDeckLenAct != deltDeckLenExp {
+		errMsgExp := "Expected delt deck to have %v card(s)"
+		errMsgAct := "Actual delt deck has %v card(s)"
+		t.Errorf(errMsgExp, deltDeckLenExp)
+		t.Errorf(errMsgAct, deltDeckLenAct)
+	}
+}
+
+func TestDealCards(t *testing.T) {
+	actualDeck := newDeck()
+	deltDeck := newDeck()
+
+	cardsToDeal := 5
+	totalPlayers := 2
+	playerHand, dealerHand := deltDeck.dealCards(cardsToDeal)
+
+	if len(playerHand) != cardsToDeal {
+		errMsgExp := "Expected player hand to have %v card(s)"
+		errMsgAct := "Actual player hand has %v card(s)"
+		t.Errorf(errMsgExp, cardsToDeal)
+		t.Errorf(errMsgAct, len(playerHand))
+	}
+
+	if len(dealerHand) != cardsToDeal {
+		errMsgExp := "Expected dealer hand to have %v card(s)"
+		errMsgAct := "Actual dealer hand has %v card(s)"
+		t.Errorf(errMsgExp, cardsToDeal)
+		t.Errorf(errMsgAct, len(dealerHand))
+	}
+
+	deltDeckLenAct := len(deltDeck)
+	deltDeckLenExp := len(actualDeck) - cardsToDeal*totalPlayers
 
 	if deltDeckLenAct != deltDeckLenExp {
 		errMsgExp := "Expected delt deck to have %v card(s)"

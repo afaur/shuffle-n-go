@@ -1,20 +1,55 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
+	"os"
 	"reflect"
+	"strconv"
 	"time"
 )
 
-func debugMsg(msg string) {
+func testRun() bool {
+	v := flag.Lookup("test.v")
+	return v != nil
+}
+
+func printDebug(msg string) {
 	fmt.Println("")
 	fmt.Println("-------------------------------------")
 	if msg != "" {
 		fmt.Println(msg + "...")
 	}
 	fmt.Println("-------------------------------------")
-	time.Sleep(2500 * time.Millisecond)
+}
+
+func delayOutput() {
+	outputDelay := os.Getenv("output_delay")
+	if outputDelay != "" {
+		if v, err := strconv.Atoi(outputDelay); err == nil {
+			time.Sleep(time.Duration(v) * time.Millisecond)
+		}
+	} else {
+		time.Sleep(1000 * time.Millisecond)
+	}
+}
+
+func debugMsg(msg string) {
+	if testRun() {
+		return
+	} else {
+		printDebug(msg)
+	}
+}
+
+func debugMsgDelay(msg string) {
+	if testRun() {
+		return
+	} else {
+		printDebug(msg)
+		delayOutput()
+	}
 }
 
 func Shuffle(s interface{}) {
@@ -38,10 +73,10 @@ func RandomInt(min int, max int) int {
 func createOrLoadDeck(deckFile string) deck {
 	maybeDeck := newDeckFromFile(deckFile, true)
 	if len(maybeDeck) == 0 {
-		debugMsg("Creating a new deck")
+		debugMsgDelay("Creating a new deck")
 		return newDeck()
 	} else {
-		debugMsg("Loading a deck from file")
+		debugMsgDelay("Loading a deck from file")
 		return maybeDeck
 	}
 }

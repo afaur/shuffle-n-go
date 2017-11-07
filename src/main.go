@@ -1,24 +1,29 @@
 package main
 
+import "os"
+
 func main() {
-	debugMsg("Starting deck simulation")
+	os.Setenv("output_delay", "2000")
+	cardsPerPlayer := 7
+
+	debugMsgDelay("Starting deck simulation")
 	deck := createOrLoadDeck("decks/new_deck")
 
-	debugMsg("Attempting to Shuffle deck")
+	debugMsgDelay("Attempting to Shuffle deck")
 	deck.shuffle()
 
-	debugMsg("Saving the shuffled deck")
+	debugMsgDelay("Saving the shuffled deck")
 	deck.saveToFile("decks/shuffled_deck")
 
-	debugMsg("Dealing 7 cards to each player")
-	deck, playerHand, dealerHand := deck.dealCards(7)
+	debugMsgDelay("Dealing 7 cards to each player")
+	playerHand, dealerHand := deck.dealCards(cardsPerPlayer)
 
-	debugMsg("Cards in virtual players hand")
+	debugMsgDelay("Cards in virtual players hand")
 	playerHand.print()
 
-	debugMsg("Cards currently in dealers hand")
+	debugMsgDelay("Cards currently in dealers hand")
 	dealerHand.print()
 
-	debugMsg("Cards left in deck")
+	debugMsgDelay("Cards left in deck")
 	deck.print()
 }

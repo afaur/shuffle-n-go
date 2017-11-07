@@ -27,10 +27,11 @@ func (d deck) print() {
 	}
 }
 
-func (d deck) deal(hand deck, handSize int) (deck, deck) {
-	newHand := append(hand, d[:handSize]...)
-	newDeck := d[handSize:]
-	return newDeck, newHand
+func (d *deck) deal(hand *deck, handSize int) {
+	curDeck := *d
+	newHand := *hand
+	*hand = append(newHand, curDeck[:handSize]...)
+	*d = curDeck[handSize:]
 }
 
 func (d deck) toString() string {
@@ -65,22 +66,21 @@ func (d deck) shuffle() {
 	d = deck(slice)
 }
 
-func (d deck) dealCards(cardsPerPlayer int) (deck, deck, deck) {
+func (d *deck) dealCards(cardsPerPlayer int) (deck, deck) {
 	playerHand := deck{}
 	dealerHand := deck{}
 
 	cardsToDeal := 2 * cardsPerPlayer
 	cardsDelt := 0
 
-	fmt.Println("-------------------------------------")
 	for cardsDelt < cardsToDeal {
-		fmt.Println("Dealing one card to a player...")
-		d, playerHand = d.deal(playerHand, 1)
+		debugMsg("Dealing one card to the player")
+		d.deal(&playerHand, 1)
 
-		fmt.Println("Dealing one card to the dealer...")
-		d, dealerHand = d.deal(dealerHand, 1)
+		debugMsg("Dealing one card to the dealer")
+		d.deal(&dealerHand, 1)
 
 		cardsDelt += 2
 	}
-	return d, playerHand, dealerHand
+	return playerHand, dealerHand
 }
