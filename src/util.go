@@ -15,23 +15,46 @@ func testRun() bool {
 	return v != nil
 }
 
-func printDebug(msg string) {
-	fmt.Println("")
+func printFancyDebug(msg string) {
 	fmt.Println("-------------------------------------")
 	if msg != "" {
 		fmt.Println(msg + "...")
 	}
 	fmt.Println("-------------------------------------")
+	fmt.Println("")
+}
+
+func printDebug(msg string) {
+	if msg != "" {
+		fmt.Printf(msg)
+	}
+}
+
+func delayAmountInMs() int {
+	delayMs := 1000
+	outputDelay := os.Getenv("output_delay")
+	if v, err := strconv.Atoi(outputDelay); err == nil {
+		delayMs = v
+	}
+	return delayMs
 }
 
 func delayOutput() {
-	outputDelay := os.Getenv("output_delay")
-	if outputDelay != "" {
-		if v, err := strconv.Atoi(outputDelay); err == nil {
-			time.Sleep(time.Duration(v) * time.Millisecond)
-		}
+	time.Sleep(time.Duration(delayAmountInMs()) * time.Millisecond)
+}
+
+func debugMsgCall(msg string) {
+	if msg == "" {
+		println("\n")
 	} else {
-		time.Sleep(1000 * time.Millisecond)
+		if msg[:3] == "CLS" {
+			delayOutput()
+			fmt.Printf("\x1b[2K\r")
+		} else if msg[:1] == "\b" {
+			printDebug(msg)
+		} else {
+			printFancyDebug(msg)
+		}
 	}
 }
 
@@ -39,7 +62,7 @@ func debugMsg(msg string) {
 	if testRun() {
 		return
 	} else {
-		printDebug(msg)
+		debugMsgCall(msg)
 	}
 }
 
@@ -47,7 +70,7 @@ func debugMsgDelay(msg string) {
 	if testRun() {
 		return
 	} else {
-		printDebug(msg)
+		debugMsgCall(msg)
 		delayOutput()
 	}
 }

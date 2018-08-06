@@ -3,8 +3,8 @@ package main
 import "os"
 
 func main() {
-	os.Setenv("output_delay", "2000")
-	cardsPerPlayer := 7
+	os.Setenv("output_delay", "500")
+	cardsPerPlayer := 5
 
 	debugMsgDelay("Starting deck simulation")
 	deck := createOrLoadDeck("decks/new_deck")

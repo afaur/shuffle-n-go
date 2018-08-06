@@ -25,6 +25,7 @@ func (d deck) print() {
 	for i, card := range d {
 		fmt.Println(i, card)
 	}
+	fmt.Println("")
 }
 
 func (d *deck) deal(hand *deck, handSize int) {
@@ -74,13 +75,20 @@ func (d *deck) dealCards(cardsPerPlayer int) (deck, deck) {
 	cardsDelt := 0
 
 	for cardsDelt < cardsToDeal {
-		debugMsg("Dealing one card to the player")
+		debugMsg("CLS")
+
+		debugMsg("\bDealing card to player...     ")
 		d.deal(&playerHand, 1)
 
-		debugMsg("Dealing one card to the dealer")
+		debugMsg("CLS")
+
+		debugMsg("\bDealing card to self...       ")
 		d.deal(&dealerHand, 1)
 
 		cardsDelt += 2
 	}
+
+	debugMsg("")
+
 	return playerHand, dealerHand
 }
