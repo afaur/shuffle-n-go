@@ -1,6 +1,9 @@
 package main
 
-import "os"
+import (
+	"os"
+	"strconv"
+)
 
 func main() {
 	os.Setenv("output_delay", "500")
@@ -15,7 +18,7 @@ func main() {
 	debugMsgDelay("Saving the shuffled deck")
 	deck.saveToFile("decks/shuffled_deck")
 
-	debugMsgDelay("Dealing 7 cards to each player")
+	debugMsgDelay("Dealing " + strconv.Itoa(cardsPerPlayer) + " cards to each player")
 	playerHand, dealerHand := deck.dealCards(cardsPerPlayer)
 
 	debugMsgDelay("Cards in virtual players hand")

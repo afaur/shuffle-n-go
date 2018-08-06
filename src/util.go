@@ -47,7 +47,7 @@ func debugMsgCall(msg string) {
 	if msg == "" {
 		println("\n")
 	} else {
-		if msg[:3] == "CLS" {
+		if msg[:2] == "CL" {
 			delayOutput()
 			fmt.Printf("\x1b[2K\r")
 		} else if msg[:1] == "\b" {

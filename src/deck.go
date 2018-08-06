@@ -75,12 +75,12 @@ func (d *deck) dealCards(cardsPerPlayer int) (deck, deck) {
 	cardsDelt := 0
 
 	for cardsDelt < cardsToDeal {
-		debugMsg("CLS")
+		debugMsg("CL")
 
 		debugMsg("\bDealing card to player...     ")
 		d.deal(&playerHand, 1)
 
-		debugMsg("CLS")
+		debugMsg("CL")
 
 		debugMsg("\bDealing card to self...       ")
 		d.deal(&dealerHand, 1)
